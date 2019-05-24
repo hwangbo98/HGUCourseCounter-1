@@ -32,9 +32,13 @@ public class HGUCoursePatternAnalyzer {
 		
 		String dataPath = args[0]; // csv file to be analyzed
 		String resultPath = args[1]; // the file path where the results are saved.
-		ArrayList<String> lines = Utils.getLines(dataPath);
+		ArrayList<String> lines = Utils.getLines(dataPath,true);
 		
-		students = loadStudentCourseRecords(lines);
+		for(int j=0; j<lines.size(); j++) {
+			System.out.println(lines.get(j));
+		}
+		
+		//students = loadStudentCourseRecords(lines);
 		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
