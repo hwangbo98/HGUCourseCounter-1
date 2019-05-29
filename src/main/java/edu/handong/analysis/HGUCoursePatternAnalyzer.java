@@ -12,7 +12,8 @@ import edu.handong.analysis.utils.Utils;
 
 public class HGUCoursePatternAnalyzer {
 
-	private HashMap<String,Student> students;
+	private HashMap<String,Student> students = new HashMap<String,Student>();
+	private HashMap<String, Integer> semeAndYear = new HashMap<String, Integer>();
 	
 	/**
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
@@ -34,19 +35,44 @@ public class HGUCoursePatternAnalyzer {
 		String resultPath = args[1]; // the file path where the results are saved.
 		ArrayList<String> lines = Utils.getLines(dataPath,true);
 		
-		for(int j=0; j<lines.size(); j++) {
+		
+		 /*for(int j=0; j<lines.size(); j++) {
 			System.out.println(lines.get(j));
-		}
+		} */
+		/*ArrayList<String> hey = loadStudentCourseRecords(lines);
+		for(int j=0; j<hey.size(); j++) {
+			System.out.println(hey.get(j));
+		} */
 		
-		//students = loadStudentCourseRecords(lines);
 		
+		students = loadStudentCourseRecords(lines);
+		/*for(String key : students.keySet()) {
+			Student value = students.get(key);
+			System.out.println("key:" +key + "value: " + value);
+		}  */
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
-		
+		for (String str : sortedStudents.keySet()) {
+			Student resultValue = sortedStudents.get(str);
+			System.out.println("key:" +str + "value: " + resultValue);
+		}  
 		// Generate result lines to be saved.
-		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
 		
-		// Write a file (named like the value of resultPath) with linesTobeSaved.
+		/*for(String str : students.keySet()) {
+			Student stu = new Student(str);
+			for( String key : stu.getSemestersByYearAndSemester().keySet()) {
+				System.out.println("Key : "+ key + "value :" + stu.getSemestersByYearAndSemester().get(key));
+			}
+		} */
+		
+		//Student stu = new Student(students.keySet());
+		//Map<String, Integer> just = new TreeMap<String,Integer>());
+		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+		for(int i=0; i<linesToBeSaved.size(); i++) {
+			System.out.println(linesToBeSaved.get(i));
+		} 
+		
+		//Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
 	}
 	
@@ -57,11 +83,30 @@ public class HGUCoursePatternAnalyzer {
 	 * @return
 	 */
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
+		//HashMap<String,Student> loadStudentCourseRecords = new HashMap<String,Student>();
+		students = new HashMap<String,Student>();
+	
+		for(String line: lines) {
+			//System.out.println(line);
+			Course courses = new Course(line);
+			//System.out.println(courses);
+			String identity = courses.getStudentId();
+			if(students.containsKey(identity)){
+				students.get(identity).addCourse(courses);
+			} else {
+				Student student = new Student(identity);
+				student.addCourse(courses);
+				students.put(identity,student);
+			}
+			
+			
+			
+		}
 		
-		// TODO: Implement this method
 		
-		return null; // do not forget to return a proper variable.
+		return students; // do not forget to return a proper variable.
 	}
+
 
 	/**
 	 * This method generate the number of courses taken by a student in each semester. The result file look like this:
@@ -77,9 +122,33 @@ public class HGUCoursePatternAnalyzer {
 	 * @return
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
+		ArrayList<String> countNumOfCourses = new ArrayList<String>();
+		String countNum;
+		int i;
+		int num=0;
+		int num2=0;
 		
+		
+		for (String str : sortedStudents.keySet()) {
+			int count=0;
+			Student resultValue = sortedStudents.get(str);
+			System.out.println(resultValue.getSemestersByYearAndSemester().keySet());
+			for(String resultKey :resultValue.getSemestersByYearAndSemester().keySet()) {
+				num= resultValue.getSemestersByYearAndSemester().get(resultKey);
+				num2 = resultValue.getNumCourseInNthSementer(num);
+				count++;
+			} System.out.println("Student Id:"+ str +"year:" +num+ "count : " +num2 +"total:" +count);
+				//System.out.println("num :" + num + "result :" +resultValue);
+			//System.out.println(resultValue.toString());
+			countNum=resultValue.toString();//.split(",")[num].trim();
+			countNumOfCourses.add(countNum);
+		}
+	
+			
+			
+			
 		// TODO: Implement this method
 		
-		return null; // do not forget to return a proper variable.
-	}
-}
+		return countNumOfCourses; // do not forget to return a proper variable.
+	} 
+} 
