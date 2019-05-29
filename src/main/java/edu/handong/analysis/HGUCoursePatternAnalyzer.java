@@ -52,10 +52,7 @@ public class HGUCoursePatternAnalyzer {
 		}  */
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
-		for (String str : sortedStudents.keySet()) {
-			Student resultValue = sortedStudents.get(str);
-			System.out.println("key:" +str + "value: " + resultValue);
-		}  
+		
 		// Generate result lines to be saved.
 		
 		/*for(String str : students.keySet()) {
@@ -67,10 +64,7 @@ public class HGUCoursePatternAnalyzer {
 		
 		//Student stu = new Student(students.keySet());
 		//Map<String, Integer> just = new TreeMap<String,Integer>());
-		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
-		for(int i=0; i<linesToBeSaved.size(); i++) {
-			System.out.println(linesToBeSaved.get(i));
-		} 
+		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents); 
 		
 		//Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
@@ -123,25 +117,24 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		ArrayList<String> countNumOfCourses = new ArrayList<String>();
+		
 		String countNum;
 		int i;
 		int num=0;
 		int num2=0;
-		
-		
+		System.out.println("Student ID " + " TotalNumberOfSemestersRegistered " + " Semester " + " NumCoursesTakenInTheSemester ");
 		for (String str : sortedStudents.keySet()) {
 			int count=0;
 			Student resultValue = sortedStudents.get(str);
-			System.out.println(resultValue.getSemestersByYearAndSemester().keySet());
-			for(String resultKey :resultValue.getSemestersByYearAndSemester().keySet()) {
-				num= resultValue.getSemestersByYearAndSemester().get(resultKey);
+			Map<String, Integer> sort = new TreeMap<String, Integer>(resultValue.getSemestersByYearAndSemester());
+			
+			for(String resultKey :sort.keySet()) {
+				num= sort.get(resultKey);
 				num2 = resultValue.getNumCourseInNthSementer(num);
 				count++;
-			} System.out.println("Student Id:"+ str +"year:" +num+ "count : " +num2 +"total:" +count);
-				//System.out.println("num :" + num + "result :" +resultValue);
-			//System.out.println(resultValue.toString());
-			countNum=resultValue.toString();//.split(",")[num].trim();
-			countNumOfCourses.add(countNum);
+				countNumOfCourses.add(str+"        " + sort.size() +"                                " + num + "            "+num2);
+				System.out.println(str+"        " + sort.size() +"                                " + num + "            "+num2);
+			} 
 		}
 	
 			
