@@ -123,6 +123,7 @@ public class HGUCoursePatternAnalyzer {
 		int num=0;
 		int num2=0;
 		countNumOfCourses.add("Student ID " + " TotalNumberOfSemestersRegistered " + " Semester " + " NumCoursesTakenInTheSemester ");
+		countNumOfCourses.add("\n");
 		for (String str : sortedStudents.keySet()) {
 			int count=0;
 			Student resultValue = sortedStudents.get(str);
@@ -132,8 +133,9 @@ public class HGUCoursePatternAnalyzer {
 				num= sort.get(resultKey);
 				num2 = resultValue.getNumCourseInNthSementer(num);
 				count++;
+				
 				countNumOfCourses.add(str+"        " + sort.size() +"                                " + num + "            "+num2);
-				System.out.println(str+"        " + sort.size() +"                                " + num + "            "+num2);
+				countNumOfCourses.add("\n");
 			} 
 		}
 	
