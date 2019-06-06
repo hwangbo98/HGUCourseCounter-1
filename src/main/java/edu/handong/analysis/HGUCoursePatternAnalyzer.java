@@ -4,16 +4,35 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.lang.Iterable;
 
 import edu.handong.analysis.datamodel.Course;
 import edu.handong.analysis.datamodel.Student;
 import edu.handong.analysis.utils.NotEnoughArgumentException;
 import edu.handong.analysis.utils.Utils;
+import edu.handong.analysis.utils.csvParser;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 public class HGUCoursePatternAnalyzer {
 
 	private HashMap<String,Student> students = new HashMap<String,Student>();
 	private HashMap<String, Integer> semeAndYear = new HashMap<String, Integer>();
+	private ArrayList<Course> saveCourse ;
+	private String studentId;
+	private String yearMonthGraduated;
+	private String firstMajor;
+	private String secondMajor;
+	private String courseCode;
+	private String courseName;
+	private String courseCredit;
+	private int yearTaken;
+	private int semesterCourseTaken; 
+	
+	private HashMap<String, Integer> countStudents = new HashMap<String, Integer>();		
+		
 	
 	/**
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
@@ -35,14 +54,19 @@ public class HGUCoursePatternAnalyzer {
 		String resultPath = args[1]; // the file path where the results are saved.
 		ArrayList<String> lines = Utils.getLines(dataPath,true);
 		
+		csvParser reader =new csvParser();
+		/*for(int i=0; i<reader.listOfAll().size(); i++) {
+		System.out.println(reader.listOfAll());
+		}
+		 */ 
+		ArrayList<String> lineToList = new ArrayList<String>();
 		
-		 /*for(int j=0; j<lines.size(); j++) {
-			System.out.println(lines.get(j));
-		} */
-		/*ArrayList<String> hey = loadStudentCourseRecords(lines);
-		for(int j=0; j<hey.size(); j++) {
-			System.out.println(hey.get(j));
-		} */
+		
+		
+		
+		 
+		 
+		 
 		
 		
 		students = loadStudentCourseRecords(lines);
@@ -55,12 +79,7 @@ public class HGUCoursePatternAnalyzer {
 		
 		// Generate result lines to be saved.
 		
-		/*for(String str : students.keySet()) {
-			Student stu = new Student(str);
-			for( String key : stu.getSemestersByYearAndSemester().keySet()) {
-				System.out.println("Key : "+ key + "value :" + stu.getSemestersByYearAndSemester().get(key));
-			}
-		} */
+		
 		
 		//Student stu = new Student(students.keySet());
 		//Map<String, Integer> just = new TreeMap<String,Integer>());
@@ -138,12 +157,35 @@ public class HGUCoursePatternAnalyzer {
 				countNumOfCourses.add("\n");
 			} 
 		}
-	
-			
-			
-			
 		// TODO: Implement this method
 		
 		return countNumOfCourses; // do not forget to return a proper variable.
 	} 
+	/*private HashMap<String,Integer> countOfAllStudent(){
+		
+		int count =0;
+		String toYear="";
+		String toSemester="";
+		
+		for(Course coursesTakens : saveCourse) {
+			toYear = Integer.toString(coursesTakens.getYearTaken()); 
+			toSemester = Integer.toString(coursesTakens.getSemesterCourseTaken());
+			String toYearAndtoSemester = toYear + "-" + toSemester ;
+			//if(!semeInstance.containsKey(toYearAndtoSemester)){
+			count++;
+			semeInstance.put(toYearAndtoSemester,count);
+			//System.out.println(toYearAndtoSemester+count);
+			}
+			else ;
+			
+		}
+		return countStudents;
+	}  */
+	
+	
+	//private ArrayList<String> rateOfCourse(String code){
+		
+		
+	
+	//return }
 } 
