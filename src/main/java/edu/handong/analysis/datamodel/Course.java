@@ -1,5 +1,7 @@
 package edu.handong.analysis.datamodel;
 
+import java.util.*;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -14,6 +16,8 @@ public class Course {
 	private String courseCredit;
 	private int yearTaken;
 	private int semesterCourseTaken;
+	private ArrayList<CSVRecord> allCourse;
+	private HashMap<String, Integer> studentsTake;
 	
 	public Course(String line) {
 		
@@ -28,17 +32,35 @@ public class Course {
 		semesterCourseTaken = Integer.parseInt(line.split(",")[8].trim());
 	}
 	
-	public Course(CSVRecord record) {
-		studentId = record.get(0);
-		yearMonthGraduated = record.get(1);
-		firstMajor = record.get(2);
-		secondMajor = record.get(3);
-		courseCode = record.get(4);
-		courseName = record.get(5);
-		courseCredit = record.get(6);
-		yearTaken = Integer.parseInt(record.get(7));
-		semesterCourseTaken = Integer.parseInt(record.get(8));
+	public Course(String courseName, String courseCode) {
+		allCourse = new ArrayList<CSVRecord>();
+		this.courseName = courseName;
+		this.courseCode = courseCode;
 	}
+	
+	public void addRecord(CSVRecord lines) {
+		allCourse.add(lines);
+	}
+	
+	public HashMap<String, Integer> getStudentsTake(int startYear, int endYear){
+		HashMap<String, Integer> studentsTake = new HashMap<String, Integer>();
+		
+		for(int i=0; i<allCourse.size(); i++) {
+			int saveYear = Integer.parseInt(allCourse.get(i).get(7).trim());
+			
+			if(saveYear >=startYear && saveYear<= endYear) {
+				String yearAndSemester = saveYear + "-" + allCourse.get(i).get(8).trim();
+				
+				if(!studentsTake.containsKey(yearAndSemester)) {
+					studentsTake.put(yearAndSemester, 1);
+				}
+				else studentsTake.put(yearAndSemester, studentsTake.get(yearAndSemester)+1);
+				}
+			}
+		
+			return studentsTake;
+		}
+	
 
 	public String getStudentId() {
 		return studentId;
@@ -51,6 +73,9 @@ public class Course {
 	}
 	public int getSemesterCourseTaken() {
 		return semesterCourseTaken;
+	}
+	public String getCourseCode() {
+		return courseCode;
 	}
 	
 

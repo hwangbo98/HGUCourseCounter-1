@@ -1,43 +1,43 @@
 package edu.handong.analysis.utils;
 
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 import java.util.*;
-import java.io.InputStreamReader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import edu.handong.analysis.datamodel.Student;
+
+
 public class csvParser {
-	private String studentID;
-    private String yearMonthGraduated;
-    private String firstMajor ;
-    private String secondMajor;
-    private String courseCode ;
-    private String courseName;
-    private String courseCredit ;
-    private String yearTaken ;
-    private String semesterTaken ; 
+	
 	
     
-	public ArrayList<String> listOfAll() {
-		ArrayList<String> recordList = new ArrayList<String>();
+	public static List<CSVRecord> listOfAll(String file, boolean removeHeader) {
+		List<CSVRecord> records = null;
+		
 		try {
-			Reader in = new FileReader("/Users/yeon/Downloads/hw5data.csv");
-			Iterable<CSVRecord> records = CSVFormat.EXCEL.parse(in);
+			Reader in = new FileReader(file);
+			CSVParser save = new CSVParser(in, CSVFormat.EXCEL);
+			records = save.getRecords();
 			
-			for(CSVRecord record : records) {
+			save.close();
+		} catch(FileNotFoundException e) {
+			System.out.println("The file path does not exist. Please check your CLI argument!");
+			System.exit(0);
+		} catch(IOException e) {
+			System.out.println(e.getMessage());
+			System.exit(0);
+		}
+		if(removeHeader) {
+			records.remove(0);
+			
+		}
+			/*for(CSVRecord record : records) {
 				studentID = record.get(0);
 				yearMonthGraduated = record.get(1);
 				firstMajor = record.get(2);
@@ -47,29 +47,17 @@ public class csvParser {
 				courseCredit = record.get(6);
 				yearTaken = record.get(7);
 				semesterTaken = record.get(8); 
-				recordList.add(studentID + yearMonthGraduated + firstMajor + secondMajor + courseCode + courseName + courseCredit + yearTaken + semesterTaken);
-				//recordList.add("\n");
-			}
+				recordList.add(studentID +"," + yearMonthGraduated +"," + firstMajor +"," + secondMajor +"," + courseCode +"," + courseName +"," + courseCredit +"," + yearTaken +"," + semesterTaken +",");
+				recordList.add("\n");
+			} */
 			/*for(int i =0; i<recordList.size(); i++) {
 				System.out.println(recordList);
 			} */
 			
-			
-			
-			
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return recordList;
+			return records;
 	}
-	public String getStudentID() {
-		return studentID;
-	}
-	public String getSecondMajor() {
-		return secondMajor;
-	}
+			
+		
 }
 		
 		

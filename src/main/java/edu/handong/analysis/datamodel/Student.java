@@ -53,15 +53,17 @@ public class Student {
 			return semeInstance;
 		} 
 		
-		public int getNumCourseInNthSementer(int semester) {
+		public int getNumCourseInNthSemester(int semester, int startYear, int endYear) {
 			int count =0;
 			String toYear1 ="";
 			String toSemester1 ="";
+			
 			for(Course courTk : coursesTaken) {
 				toYear1 = Integer.toString(courTk.getYearTaken()); 
 				toSemester1 = Integer.toString(courTk.getSemesterCourseTaken());
+				int year = courTk.getYearTaken();
 				String toYearAndtoSemester1 = toYear1 + "-" + toSemester1 ;
-				if(semeInstance.get(toYearAndtoSemester1)==semester) {
+				if(year>= startYear && year<=endYear && semeInstance.get(toYearAndtoSemester1)==semester) {
 					count++;
 					
 				}
@@ -71,4 +73,8 @@ public class Student {
 			}
 			return count; 
 		} 
-}
+		
+		public String getStudentId() {
+			return studentId;
+		}
+	}
